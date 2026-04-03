@@ -30,7 +30,7 @@ class ContractParser:
         ])
         pdb.set_trace()
         # res.choices[0].message.content
-        res.choices[0].finish_reason
+        # res.choices[0].finish_reason
 
 
 if __name__ == '__main__':
