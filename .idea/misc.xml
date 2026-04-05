@@ -3,5 +3,5 @@
   <component name="Black">
     <option name="sdkName" value="bot" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="bot" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="app" project-jdk-type="Python SDK" />
 </project>
