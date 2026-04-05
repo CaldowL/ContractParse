@@ -11,7 +11,6 @@ client = OpenAI(base_url=MODEL_BASE_URL, api_key=MODEL_API_KEY)
 @retry(stop_max_attempt_number=3)
 def request_chat(message: list | str, functions: list = None) -> ChatCompletion:
     logger.debug(message)
-    logger.debug(functions)
 
     if functions is None:
         functions = []
