@@ -4,8 +4,8 @@ import requests
 
 from openai.types.chat import ChatCompletionMessageFunctionToolCall
 
-from ContarctParser.utils.log import logger
-from ContarctParser.config import *
+from ContractParser.utils.log import logger
+from ContractParser.config import *
 
 
 class McpManager:

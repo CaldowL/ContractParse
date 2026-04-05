@@ -2,8 +2,8 @@ from retrying import retry
 from openai import OpenAI
 from openai.types.chat.chat_completion import ChatCompletion
 
-from ContarctParser.config import *
-from ContarctParser.utils.log import logger
+from ContractParser.config import *
+from ContractParser.utils.log import logger
 
 client = OpenAI(base_url=MODEL_BASE_URL, api_key=MODEL_API_KEY)
 

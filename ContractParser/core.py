@@ -1,11 +1,11 @@
 import os
 from concurrent.futures import ThreadPoolExecutor
 
-from ContarctParser.config import CHAT_MAX_EPOCH
-from ContarctParser.utils.tools import read_file
-from ContarctParser.utils.mcpm import McpManager
-from ContarctParser.utils.request_ai import request_chat
-from ContarctParser.utils.log import logger
+from ContractParser.config import CHAT_MAX_EPOCH
+from ContractParser.utils.tools import read_file
+from ContractParser.utils.mcpm import McpManager
+from ContractParser.utils.request_ai import request_chat
+from ContractParser.utils.log import logger
 
 
 class ContractParser:
@@ -16,7 +16,7 @@ class ContractParser:
         if os.path.isfile(contract):
             contract = read_file(contract)
 
-        txt = read_file("prompts/main.txt")
+        txt = read_file("ContractParser/prompts/main.txt")
         system_, user_ = txt.split("##")[:2]
         user_ = user_.replace("{{content}}", contract)
         messages_local = [
@@ -47,6 +47,10 @@ class ContractParser:
 
                 result_call = self.mcp.handle_mcp_request(tool_call)
                 messages_local.append({"role": "tool", "tool_call_id": tool_call.id, "content": result_call})
+
+            if choice.finish_reason == "stop":
+                logger.warning("当前数据不满足识别条件")
+                return None
 
     def parse_contract(self, contracts: str | list):
         """
