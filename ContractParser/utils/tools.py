@@ -6,4 +6,8 @@ def read_file(file_path: str) -> str:
 
 
 def filter_dumps(body: dict) -> dict:
-    pass
+    result = {}
+    for key, value in body.items():
+        if key in ["content", "role", "tool_calls"]:
+            result[key] = value
+    return result

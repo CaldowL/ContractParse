@@ -10,6 +10,7 @@ from ContractParser.config import *
 
 class McpManager:
     def __init__(self):
+        # 配置本地工具
         pass
 
     @staticmethod
@@ -24,7 +25,7 @@ class McpManager:
             ps: str
     ):
         """
-        总结信息，后续无需传入大模型
+        总结信息封装，后续无需传入大模型
         :param number: 合同编号，字符串格式。
         :param type_: 合同类型
         :param address: 场地地址
@@ -35,14 +36,21 @@ class McpManager:
         :param ps: 备注
         :return:
         """
+        # 做一些基础校验
+        if type_ not in ["通信机房场地租用合同", "基站房屋及场地管理合同", "无线覆盖安装合同", "续签合同",
+                         "主体变更合同", "其他合同"]:
+            raise Exception("合同类型不在可选范围内！")
+
+        pos.extend(["", ""])
+        period.extend(["", ""])
         res = {
             "合同编号": number,
             "合同类型": type_,
             "地址": address,
             "金额": price,
-            "经纬度": f"{pos[0]},{pos[1]}",
+            "经纬度": f"{pos[0]},{pos[1]}".rstrip(","),
             "面积": area,
-            "租期": f"{period[0]}-{period[1]}",
+            "租期": f"{period[0]}-{period[1]}".rstrip("-"),
             "备注": ps
         }
         return res
@@ -75,41 +83,41 @@ class McpManager:
                     "properties": {
                         "number": {
                             "type": "string",
-                            "description": "合同编号"
+                            "description": "合同编号，空值为空字符串"
                         },
                         "type_": {
                             "type": "string",
-                            "description": "合同类型"
+                            "description": "合同类型，空值为空字符串"
                         },
                         "address": {
                             "type": "string",
-                            "description": "场地地址"
+                            "description": "场地地址，空值为空字符串"
                         },
                         "price": {
                             "type": "string",
-                            "description": "金额"
+                            "description": "金额，空值为空字符串"
                         },
                         "pos": {
                             "type": "array",
                             "items": {
                                 "type": "string"
                             },
-                            "description": "位置，[经度, 纬度]"
+                            "description": "位置，[经度, 纬度]，空值为空列表"
                         },
                         "area": {
                             "type": "string",
-                            "description": "场地面积"
+                            "description": "场地面积，空值为空字符串"
                         },
                         "period": {
                             "type": "array",
                             "items": {
                                 "type": "string"
                             },
-                            "description": "租期，[开始时间, 结束时间]"
+                            "description": "租期，[开始时间, 结束时间]，空值为空列表"
                         },
                         "ps": {
                             "type": "string",
-                            "description": "备注"
+                            "description": "备注，空值为空字符串"
                         }
                     },
                     "required": [
@@ -154,12 +162,14 @@ class McpManager:
     def handle_mcp_request(self, tool_call: ChatCompletionMessageFunctionToolCall):
         try:
             arguments = eval(tool_call.function.arguments)
+            logger.debug(f"{tool_call.function.name} {arguments}")
             if tool_call.function.name == "summary_info":
                 return self.summary_info(**arguments)
             if tool_call.function.name == "get_addr_pos":
                 return self.get_addr_pos(**arguments)
         except Exception as e:
             logger.debug(traceback.format_exc())
+            return f"{e}"
 
         return "未找到匹配的方法"
 
