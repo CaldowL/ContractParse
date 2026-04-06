@@ -1,7 +1,7 @@
 import os
 from concurrent.futures import ThreadPoolExecutor
 
-from ContractParser.config import CHAT_MAX_EPOCH
+from ContractParser.config import CHAT_MAX_EPOCH, DIR_LIB_ROOT
 from ContractParser.utils.tools import read_file
 from ContractParser.utils.mcpm import McpManager
 from ContractParser.utils.request_ai import request_chat
@@ -16,7 +16,7 @@ class ContractParser:
         if os.path.isfile(contract):
             contract = read_file(contract)
 
-        txt = read_file("ContractParser/prompts/main.txt")
+        txt = read_file(os.path.join(DIR_LIB_ROOT, "prompts/main.txt"))
         system_, user_ = txt.split("##")[:2]
         user_ = user_.replace("{{content}}", contract)
         messages_local = [
@@ -49,7 +49,7 @@ class ContractParser:
                 messages_local.append({"role": "tool", "tool_call_id": tool_call.id, "content": result_call})
 
             if choice.finish_reason == "stop":
-                logger.warning("当前数据不满足识别条件")
+                logger.error("当前数据不满足识别条件")
                 return None
 
     def parse_contract(self, contracts: str | list):
@@ -69,14 +69,4 @@ class ContractParser:
 
 if __name__ == '__main__':
     contractParser = ContractParser()
-    s = """
-文件名：CU12-3456-7890-123456.doc
-合同内容：
-《场地管理服务协议》
-协议编号：CU12-3456-7890-123456
-甲方：中国移动通信集团江苏有限公司南京分公司
-乙方：南京浦口科创物业管理有限公司
-
-为支持甲方在南京地区数字移动通信系统工程建设的需要，乙方愿意将管理权的房屋及场地提供给甲方管理。场地位于：南京市浦口区江浦街道中圣北街20号。场地管理使用面积为：30平方米。约定年管理服务费25000元（含税，按年支付，币种人民币）。期限自2014年9月5日至2024年9月4日。协议到期后，若双方无异议，本协议自动续期一年。
-    """
-    logger.info(contractParser.parse_signal_contract(s))
+    logger.info(contractParser.parse_signal_contract("../files/1.txt"))

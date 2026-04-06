@@ -1,3 +1,8 @@
+import os
+
+# 配置库根目录
+DIR_LIB_ROOT = os.path.dirname(os.path.abspath(__file__))
+
 # 大模型相关参数
 MODEL_BASE_URL = "https://ark.cn-beijing.volces.com/api/v3/"
 MODEL_NAME = "glm-4-7-251222"
