@@ -6,7 +6,7 @@ DIR_LIB_ROOT = os.path.dirname(os.path.abspath(__file__))
 # 大模型相关参数
 MODEL_BASE_URL = "https://ark.cn-beijing.volces.com/api/v3/"
 MODEL_NAME = "glm-4-7-251222"
-MODEL_API_KEY = "f5409653-5cca-4db4-a3c7-02c01596e43d"
+MODEL_API_KEY = "f5409653-5cca-"
 
 # 最大对话轮数
 CHAT_MAX_EPOCH = 15
