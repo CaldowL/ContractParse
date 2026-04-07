@@ -13,7 +13,7 @@ class ContractParser:
     def __init__(self):
         self.mcp = McpManager()
 
-    def parse_signal_contract(self, contract: str):
+    def _parse_signal_contract(self, contract: str):
         if os.path.isfile(contract):
             contract = read_file(contract)
 
@@ -71,6 +71,13 @@ class ContractParser:
             if choice.finish_reason == "stop":
                 logger.error("当前数据不满足识别条件")
                 return None
+
+    def parse_signal_contract(self, contract: str):
+        try:
+            return self._parse_signal_contract(contract)
+        except Exception as e:
+            logger.error(e)
+            return None
 
     def parse_contract(self, contracts: str | list):
         """
