@@ -61,7 +61,7 @@ class ContractParser:
                         continue
 
                     # 文件名兜底策略
-                    if not result_call.get("合同编号"):
+                    if not result_call.get("合同编号") and os.path.isfile(contract):
                         result_call["合同编号"] = os.path.basename(contract)
                     return result_call
 
