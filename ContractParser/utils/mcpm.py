@@ -10,7 +10,7 @@ from ContractParser.config import *
 
 class McpManager:
     def __init__(self):
-        # 配置本地工具
+        # 配置本地工具，为简化demo，使用function call替代mcp服务
         pass
 
     @staticmethod
