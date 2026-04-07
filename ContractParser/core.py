@@ -1,5 +1,5 @@
-import json
 import os
+import json
 from concurrent.futures import ThreadPoolExecutor
 
 from ContractParser.config import CHAT_MAX_EPOCH, DIR_LIB_ROOT
